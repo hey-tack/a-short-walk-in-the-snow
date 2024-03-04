@@ -3103,7 +3103,7 @@ filter_enabled = true
 filters = ["Armature/Skeleton3D:Fingers L", "Armature/Skeleton3D:Hand L", "Armature/Skeleton3D:Hand R", "Armature/Skeleton3D:Head", "Armature/Skeleton3D:Lower Arm L", "Armature/Skeleton3D:Lower Arm R", "Armature/Skeleton3D:Upper Arm L", "Armature/Skeleton3D:Upper Arm R"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_u2nvu"]
-graph_offset = Vector2(-228.625, 104.939)
+graph_offset = Vector2(-8.09869, 431.394)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_ptisk")
 nodes/Animation/position = Vector2(920, 780)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_adj76")

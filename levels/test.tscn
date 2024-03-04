@@ -3116,7 +3116,7 @@ filter_enabled = true
 filters = ["Armature/Skeleton3D:Fingers L", "Armature/Skeleton3D:Hand L", "Armature/Skeleton3D:Hand R", "Armature/Skeleton3D:Head", "Armature/Skeleton3D:Lower Arm L", "Armature/Skeleton3D:Lower Arm R", "Armature/Skeleton3D:Upper Arm L", "Armature/Skeleton3D:Upper Arm R"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_u2nvu"]
-graph_offset = Vector2(-228.625, 104.939)
+graph_offset = Vector2(-8.09869, 431.394)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_ptisk")
 nodes/Animation/position = Vector2(920, 780)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_adj76")
@@ -3181,7 +3181,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.238287, 0)
 shape = SubResource("CapsuleShape3D_5dktf")
 
 [node name="Armature" type="Node3D" parent="player"]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="player/Armature"]
 bones/0/name = "MainController"
@@ -3442,7 +3442,7 @@ libraries = {
 tree_root = SubResource("AnimationNodeBlendTree_u2nvu")
 anim_player = NodePath("../AnimationPlayer")
 parameters/HurtBlend/blend_amount = 0.0
-parameters/LookRotation/blend_position = Vector2(0, 0)
+parameters/LookRotation/blend_position = Vector2(-0.00160003, 0.0179641)
 parameters/LookRotationBlend/blend_amount = 1.0
 parameters/MoveSpeed/blend_amount = 0.0
 parameters/OneShot/active = false

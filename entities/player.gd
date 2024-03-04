@@ -13,6 +13,7 @@ const ACCELLERATION = 1.0
 
 var MOMENTUM = 0
 var lastdir = Vector3.ZERO;
+var lookRotation = 0;
 
 @export var sens_horizontal = 0.5
 @export var sens_vertical = 0.5
@@ -29,6 +30,23 @@ func _input(event):
 		rotate_y(deg_to_rad(-event.relative.x * sens_horizontal))
 		camera_mount.rotate_x(deg_to_rad(-event.relative.y * sens_vertical))
 
+func _process(delta): 
+	
+	# TODO: Expand this to allow looking targets. 
+	
+	lookRotation = ((armature.rotation_degrees.y + 180) / 180); 
+	var finalRotation;
+	# Some braindead maths, because I'm too tired to make this work another way.
+	if lookRotation > 1: 
+		finalRotation = -2 + lookRotation;
+	else: 
+		finalRotation = lookRotation;
+	
+	print(finalRotation);
+	# Set the characters face to look the direction the camera is pointed
+	animation_tree.set("parameters/LookRotation/blend_position", Vector2(finalRotation, 0))
+
+
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
@@ -37,7 +55,7 @@ func _physics_process(delta):
 	# Handle Jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-
+		
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
