@@ -1,12 +1,33 @@
 extends CharacterBody3D
 
+@onready var camera_mount = $camera_mount
+@onready var animation_tree = $AnimationTree
+@onready var armature = $Armature
 
-const SPEED = 5.0
+# This was partially built using Lukky's Godot 4.0 character
+# controller tutorial: https://www.youtube.com/watch?v=EP5AYllgHy8
+
+const SPEED = 4.0
 const JUMP_VELOCITY = 4.5
+const ACCELLERATION = 1.0
+
+var MOMENTUM = 0
+var lastdir = Vector3.ZERO;
+
+@export var sens_horizontal = 0.5
+@export var sens_vertical = 0.5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	animation_tree.active = true
+	
+func _input(event):
+	if event is InputEventMouseMotion:
+		rotate_y(deg_to_rad(-event.relative.x * sens_horizontal))
+		camera_mount.rotate_x(deg_to_rad(-event.relative.y * sens_vertical))
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -19,13 +40,43 @@ func _physics_process(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var input_dir = Input.get_vector("left", "right", "forward", "backward")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var lerped_direction = lerp(lastdir, direction, delta * ACCELLERATION);
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		_speed_up(delta)
+		animation_tree.set("parameters/MoveSpeed/blend_amount", (velocity.length() / SPEED))
+		
+		armature.look_at(position - lerped_direction)
+		
+		velocity.x = lerped_direction.x * MOMENTUM
+		velocity.z = lerped_direction.z * MOMENTUM
+		lastdir = lerped_direction;
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		_slow_down(delta)
+		animation_tree.set("parameters/MoveSpeed/blend_amount", (velocity.length() / SPEED))
+		if lastdir:
+			armature.look_at(position - lastdir)
+			velocity.x = lastdir.x * MOMENTUM
+			velocity.z = lastdir.z * MOMENTUM
+
 
 	move_and_slide()
+	
+func _speed_up(delta): 
+	# Gradually increment momentum.
+	if MOMENTUM < SPEED: 
+		MOMENTUM += (SPEED * delta) * ACCELLERATION
+	
+	# Cap out momentum to max speed.
+	if MOMENTUM > SPEED: 
+		MOMENTUM = SPEED
+		
+func _slow_down(delta): 
+	# Gradually decrement momentum.
+	if MOMENTUM > 0: 
+		MOMENTUM -= (SPEED * delta) * ACCELLERATION
+	
+	# Slow to zero
+	if MOMENTUM < 0: 
+		MOMENTUM = 0	
