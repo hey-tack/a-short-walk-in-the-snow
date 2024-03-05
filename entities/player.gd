@@ -35,6 +35,10 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		rotate_y(deg_to_rad(-event.relative.x * sens_horizontal))
 		camera_mount.rotate_x(deg_to_rad(-event.relative.y * sens_vertical))
+	
+	if event is InputEventKey:
+		if event.keycode == KEY_F and event.pressed: 
+			animation_tree.set("parameters/YellOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 
 func _process(delta): 
 	# To set blend tree values based on what we're looking at.
