@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://kc4bej10vd8y"]
+[gd_scene load_steps=49 format=3 uid="uid://kc4bej10vd8y"]
 
 [ext_resource type="Script" path="res://entities/player.gd" id="1_5mr1x"]
 [ext_resource type="Texture2D" uid="uid://cf4xjnv67us4c" path="res://icon.svg" id="2_a7n0f"]
@@ -3120,7 +3120,6 @@ fadein_time = 0.2
 fadeout_time = 0.2
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_u2nvu"]
-graph_offset = Vector2(-168.921, 112.268)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_ptisk")
 nodes/Animation/position = Vector2(920, 780)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_adj76")
@@ -3146,7 +3145,9 @@ nodes/Yell/position = Vector2(580, 680)
 nodes/YellOneShot/node = SubResource("AnimationNodeOneShot_34kp7")
 nodes/YellOneShot/position = Vector2(960, 400)
 nodes/output/position = Vector2(1600, 460)
-node_connections = [&"output", 0, &"DieOneShot", &"HurtBlend", 0, &"YellOneShot", &"HurtBlend", 1, &"Animation", &"LookRotationBlend", 0, &"MoveSpeed", &"LookRotationBlend", 1, &"LookRotation", &"MoveSpeed", 0, &"Idle", &"MoveSpeed", 1, &"Walk", &"TimeScale", 0, &"Yell", &"YellOneShot", 0, &"LookRotationBlend", &"YellOneShot", 1, &"TimeScale", &"DieOneShot", 0, &"HurtBlend", &"DieOneShot", 1, &"Animation 2"]
+node_connections = [&"output", 0, &"DieOneShot", &"DieOneShot", 0, &"HurtBlend", &"DieOneShot", 1, &"Animation 2", &"HurtBlend", 0, &"YellOneShot", &"HurtBlend", 1, &"Animation", &"LookRotationBlend", 0, &"MoveSpeed", &"LookRotationBlend", 1, &"LookRotation", &"MoveSpeed", 0, &"Idle", &"MoveSpeed", 1, &"Walk", &"TimeScale", 0, &"Yell", &"YellOneShot", 0, &"LookRotationBlend", &"YellOneShot", 1, &"TimeScale"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bhgtf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n1p1b"]
 albedo_texture = ExtResource("2_a7n0f")
@@ -3460,8 +3461,13 @@ parameters/YellOneShot/request = 0
 
 [node name="camera_mount" type="Node3D" parent="player"]
 
-[node name="Camera3D" type="Camera3D" parent="player/camera_mount"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.999692, 2.68302, 6.58372)
+[node name="SpringArm3D" type="SpringArm3D" parent="player/camera_mount"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.303803, 1.20914, 0.237051)
+shape = SubResource("SphereShape3D_bhgtf")
+spring_length = 4.0
+
+[node name="Camera3D" type="Camera3D" parent="player/camera_mount/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.119047, -0.0219858, 4.6133)
 
 [node name="Map" type="Node3D" parent="."]
 

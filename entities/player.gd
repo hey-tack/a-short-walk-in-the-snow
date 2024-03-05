@@ -18,6 +18,9 @@ var lastdir = Vector3.ZERO
 var lookRotationX = 0
 var lookRotationY = 0
 
+var pitch_max = 75
+var pitch_min = -55
+
 var oldLookVector = Vector2.ZERO
 
 @export var sens_horizontal = 0.5
@@ -35,6 +38,7 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		rotate_y(deg_to_rad(-event.relative.x * sens_horizontal))
 		camera_mount.rotate_x(deg_to_rad(-event.relative.y * sens_vertical))
+		camera_mount.rotation.x = clamp(camera_mount.rotation.x, deg_to_rad(pitch_min), deg_to_rad(pitch_max))
 	
 	if event is InputEventKey:
 		if event.keycode == KEY_F and event.pressed: 
