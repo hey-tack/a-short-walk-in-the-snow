@@ -104,8 +104,6 @@ func _process(delta):
 	
 	var lookVector = oldLookVector.lerp(Vector2(finalRotationX, finalRotationY), delta * LOOK_ACCELLERATION)
 	
-	print(lookVector)
-	
 	# Set the characters face to look the direction the camera is pointed
 	animation_tree.set("parameters/LookRotation/blend_position", lookVector)
 	

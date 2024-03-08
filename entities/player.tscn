@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://c6v3iof7h5b3m"]
+[gd_scene load_steps=41 format=3 uid="uid://c6v3iof7h5b3m"]
 
 [ext_resource type="Script" path="res://entities/player.gd" id="1_67no4"]
 
@@ -3057,6 +3057,8 @@ animation = &"Collapse"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ptisk"]
 animation = &"HurtWalkCycle"
 
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_hetko"]
+
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_h1h6o"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8rtmc"]
@@ -3090,7 +3092,7 @@ filters = ["Armature/Skeleton3D:Chest", "Armature/Skeleton3D:Head", "Armature/Sk
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_1e2wo"]
 
-[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_hetko"]
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_t31av"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qy5fr"]
 animation = &"WalkCycle"
@@ -3098,16 +3100,19 @@ animation = &"WalkCycle"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0i1vt"]
 animation = &"YellForward"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_5b24x"]
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_34kp7"]
 filter_enabled = true
-filters = ["Armature/Skeleton3D:Fingers L", "Armature/Skeleton3D:Hand L", "Armature/Skeleton3D:Hand R", "Armature/Skeleton3D:Head", "Armature/Skeleton3D:Lower Arm L", "Armature/Skeleton3D:Lower Arm R", "Armature/Skeleton3D:Upper Arm L", "Armature/Skeleton3D:Upper Arm R"]
+filters = ["Armature/Skeleton3D:Fingers L", "Armature/Skeleton3D:Hand L", "Armature/Skeleton3D:Hand R", "Armature/Skeleton3D:Head", "Armature/Skeleton3D:Lower Arm L", "Armature/Skeleton3D:Lower Arm R", "Armature/Skeleton3D:Neck", "Armature/Skeleton3D:Neck2", "Armature/Skeleton3D:Upper Arm L", "Armature/Skeleton3D:Upper Arm R"]
+fadein_time = 0.2
+fadeout_time = 0.2
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_u2nvu"]
-graph_offset = Vector2(-8.09869, 431.394)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_ptisk")
 nodes/Animation/position = Vector2(920, 780)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_adj76")
 "nodes/Animation 2/position" = Vector2(1160, 900)
+nodes/DieOneShot/node = SubResource("AnimationNodeOneShot_hetko")
+nodes/DieOneShot/position = Vector2(1380, 680)
 nodes/HurtBlend/node = SubResource("AnimationNodeBlend2_h1h6o")
 nodes/HurtBlend/position = Vector2(1160, 600)
 nodes/Idle/node = SubResource("AnimationNodeAnimation_8rtmc")
@@ -3118,26 +3123,32 @@ nodes/LookRotationBlend/node = SubResource("AnimationNodeBlend2_3v20v")
 nodes/LookRotationBlend/position = Vector2(680, 340)
 nodes/MoveSpeed/node = SubResource("AnimationNodeBlend2_1e2wo")
 nodes/MoveSpeed/position = Vector2(480, 260)
-nodes/OneShot/node = SubResource("AnimationNodeOneShot_hetko")
-nodes/OneShot/position = Vector2(1380, 680)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_t31av")
+nodes/TimeScale/position = Vector2(760, 600)
 nodes/Walk/node = SubResource("AnimationNodeAnimation_qy5fr")
 nodes/Walk/position = Vector2(200, 400)
 nodes/Yell/node = SubResource("AnimationNodeAnimation_0i1vt")
-nodes/Yell/position = Vector2(720, 540)
-nodes/YellBlend/node = SubResource("AnimationNodeBlend2_5b24x")
-nodes/YellBlend/position = Vector2(940, 400)
+nodes/Yell/position = Vector2(580, 680)
+nodes/YellOneShot/node = SubResource("AnimationNodeOneShot_34kp7")
+nodes/YellOneShot/position = Vector2(960, 400)
 nodes/output/position = Vector2(1600, 460)
-node_connections = [&"output", 0, &"OneShot", &"HurtBlend", 0, &"YellBlend", &"HurtBlend", 1, &"Animation", &"LookRotationBlend", 0, &"MoveSpeed", &"LookRotationBlend", 1, &"LookRotation", &"MoveSpeed", 0, &"Idle", &"MoveSpeed", 1, &"Walk", &"OneShot", 0, &"HurtBlend", &"OneShot", 1, &"Animation 2", &"YellBlend", 0, &"LookRotationBlend", &"YellBlend", 1, &"Yell"]
+node_connections = [&"output", 0, &"DieOneShot", &"DieOneShot", 0, &"HurtBlend", &"DieOneShot", 1, &"Animation 2", &"HurtBlend", 0, &"YellOneShot", &"HurtBlend", 1, &"Animation", &"LookRotationBlend", 0, &"MoveSpeed", &"LookRotationBlend", 1, &"LookRotation", &"MoveSpeed", 0, &"Idle", &"MoveSpeed", 1, &"Walk", &"TimeScale", 0, &"Yell", &"YellOneShot", 0, &"LookRotationBlend", &"YellOneShot", 1, &"TimeScale"]
 
-[node name="player" type="CharacterBody3D"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_bhgtf"]
+
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("look_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0533128, 1.70814, 0.0524373)
 script = ExtResource("1_67no4")
+sens_horizontal = 0.2
+sens_vertical = 0.2
+look_target = NodePath("../LookTarget")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.238287, 0)
 shape = SubResource("CapsuleShape3D_5dktf")
 
 [node name="Armature" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Armature"]
 bones/0/name = "MainController"
@@ -3397,15 +3408,22 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeBlendTree_u2nvu")
 anim_player = NodePath("../AnimationPlayer")
+parameters/DieOneShot/active = false
+parameters/DieOneShot/request = 0
 parameters/HurtBlend/blend_amount = 0.0
 parameters/LookRotation/blend_position = Vector2(0, 0)
 parameters/LookRotationBlend/blend_amount = 1.0
 parameters/MoveSpeed/blend_amount = 1.0
-parameters/OneShot/active = false
-parameters/OneShot/request = 0
-parameters/YellBlend/blend_amount = 0.0
+parameters/TimeScale/scale = 0.5
+parameters/YellOneShot/active = false
+parameters/YellOneShot/request = 0
 
 [node name="camera_mount" type="Node3D" parent="."]
 
-[node name="Camera3D" type="Camera3D" parent="camera_mount"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.999692, 2.68302, 6.58372)
+[node name="SpringArm3D" type="SpringArm3D" parent="camera_mount"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.303803, 1.20914, 0.237051)
+shape = SubResource("SphereShape3D_bhgtf")
+spring_length = 4.0
+
+[node name="Camera3D" type="Camera3D" parent="camera_mount/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.119047, -0.0219858, 4.6133)

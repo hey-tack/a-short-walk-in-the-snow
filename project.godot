@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Hide And Seek"
-run/main_scene="res://levels/test.tscn"
+run/main_scene="res://levels/world.tscn"
 config/features=PackedStringArray("4.0", "GL Compatibility")
 config/icon="res://icon.svg"
 
