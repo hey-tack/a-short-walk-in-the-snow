@@ -4,6 +4,7 @@ extends CharacterBody3D
 @onready var animation_tree = $AnimationTree
 @onready var armature = $Armature
 @onready var mesh = $Armature/Skeleton3D/Spfhere
+@onready var footstep_player = $FootstepPlayer
 
 # This was partially built using Lukky's Godot 4.0 character
 # controller tutorial: https://www.youtube.com/watch?v=EP5AYllgHy8
@@ -12,6 +13,23 @@ const SPEED = 4.0
 const JUMP_VELOCITY = 4.5
 const ACCELLERATION = 1.0
 const LOOK_ACCELLERATION = 4.0
+
+const STEP_BASE_PATH = "res://audio/snow_steps/"
+
+const STEP_SOUNDS = [
+	preload(STEP_BASE_PATH + "untitled.wav"),
+	preload(STEP_BASE_PATH + "untitled-2.wav"),
+	preload(STEP_BASE_PATH + "untitled-3.wav"),
+	preload(STEP_BASE_PATH + "untitled-4.wav"),
+	preload(STEP_BASE_PATH + "untitled-5.wav"),
+	preload(STEP_BASE_PATH + "untitled-6.wav"),
+	preload(STEP_BASE_PATH + "untitled-7.wav"),
+	preload(STEP_BASE_PATH + "untitled-8.wav"),
+	preload(STEP_BASE_PATH + "untitled-9.wav"),
+	preload(STEP_BASE_PATH + "untitled-10.wav"),
+	preload(STEP_BASE_PATH + "untitled-11.wav"),
+	preload(STEP_BASE_PATH + "untitled-12.wav")
+]
 
 var MOMENTUM = 0
 var lastdir = Vector3.ZERO
@@ -163,3 +181,10 @@ func _slow_down(delta):
 	# Slow to zero
 	if MOMENTUM < 0: 
 		MOMENTUM = 0	
+
+func _play_step_sound(): 
+	# Grab random step sound from the list
+	var sound = STEP_SOUNDS.pick_random()
+	if footstep_player: 
+		footstep_player.stream = sound
+		footstep_player.play()

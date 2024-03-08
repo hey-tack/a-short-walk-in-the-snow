@@ -545,6 +545,17 @@ tracks/38/path = NodePath("Armature/Skeleton3D:Neck")
 tracks/38/interp = 1
 tracks/38/loop_wrap = true
 tracks/38/keys = PackedFloat32Array(0, 1, 0.158401, 4.66469e-05, 0.00503523, 0.987362)
+tracks/39/type = "method"
+tracks/39/imported = false
+tracks/39/enabled = true
+tracks/39/path = NodePath(".")
+tracks/39/interp = 1
+tracks/39/loop_wrap = true
+tracks/39/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
+}
 
 [sub_resource type="Animation" id="Animation_oyx7b"]
 resource_name = "HurtWalkCycle"
@@ -2759,6 +2770,23 @@ tracks/38/path = NodePath("Armature/Skeleton3D:Neck")
 tracks/38/interp = 1
 tracks/38/loop_wrap = true
 tracks/38/keys = PackedFloat32Array(0, 1, 0.158401, 4.66469e-05, 0.00503523, 0.987362)
+tracks/39/type = "method"
+tracks/39/imported = false
+tracks/39/enabled = true
+tracks/39/path = NodePath(".")
+tracks/39/interp = 1
+tracks/39/loop_wrap = true
+tracks/39/keys = {
+"times": PackedFloat32Array(0.1, 0.7),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"_play_step_sound"
+}, {
+"args": [],
+"method": &"_play_step_sound"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_rgelj"]
 resource_name = "YellForward"
@@ -3142,6 +3170,10 @@ script = ExtResource("1_67no4")
 sens_horizontal = 0.2
 sens_vertical = 0.2
 look_target = NodePath("../LookTarget")
+
+[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="."]
+volume_db = -7.68
+max_polyphony = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.238287, 0)
