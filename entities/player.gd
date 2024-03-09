@@ -5,11 +5,14 @@ extends CharacterBody3D
 @onready var armature = $Armature
 @onready var mesh = $Armature/Skeleton3D/Spfhere
 @onready var footstep_player = $FootstepPlayer
+@onready var animation_player = $AnimationPlayer
 
 # This was partially built using Lukky's Godot 4.0 character
 # controller tutorial: https://www.youtube.com/watch?v=EP5AYllgHy8
 
-const SPEED = 4.0
+@export var SPEED = 4.0
+@export var input_disabled = false
+
 const JUMP_VELOCITY = 4.5
 const ACCELLERATION = 1.0
 const LOOK_ACCELLERATION = 4.0
@@ -58,9 +61,10 @@ func _input(event):
 		camera_mount.rotate_x(deg_to_rad(-event.relative.y * sens_vertical))
 		camera_mount.rotation.x = clamp(camera_mount.rotation.x, deg_to_rad(pitch_min), deg_to_rad(pitch_max))
 	
-	if event is InputEventKey:
-		if event.keycode == KEY_F and event.pressed: 
-			animation_tree.set("parameters/YellOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+	if (!input_disabled):
+		if event is InputEventKey:
+			if event.keycode == KEY_F and event.pressed: 
+				animation_tree.set("parameters/YellOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 
 func _process(delta): 
 	# To set blend tree values based on what we're looking at.
@@ -141,12 +145,18 @@ func _physics_process(delta):
 		
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir = Input.get_vector("left", "right", "forward", "backward")
+	var input_dir; 
+	if (input_disabled): 
+		input_dir = Vector2.ZERO;
+	else: 
+		input_dir = Input.get_vector("left", "right", "forward", "backward")
+		
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var lerped_direction = lerp(lastdir, direction, delta * ACCELLERATION);
 	if direction:
 		_speed_up(delta)
 		animation_tree.set("parameters/MoveSpeed/blend_amount", (velocity.length() / SPEED))
+		animation_tree.set("parameters/HurtMoveSpeed/scale", (velocity.length() / SPEED))
 		
 		armature.look_at(position - lerped_direction)
 		
@@ -156,6 +166,7 @@ func _physics_process(delta):
 	else:
 		_slow_down(delta)
 		animation_tree.set("parameters/MoveSpeed/blend_amount", (velocity.length() / SPEED))
+		animation_tree.set("parameters/HurtMoveSpeed/scale", (velocity.length() / SPEED))
 		if lastdir:
 			armature.look_at(position - lastdir)
 			velocity.x = lastdir.x * MOMENTUM
@@ -188,3 +199,8 @@ func _play_step_sound():
 	if footstep_player: 
 		footstep_player.stream = sound
 		footstep_player.play()
+
+func _die(): 
+	animation_tree.active = false
+	animation_player.speed_scale = 0.5
+	animation_player.play("Collapse")

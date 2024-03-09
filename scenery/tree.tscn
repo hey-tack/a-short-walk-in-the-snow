@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://dxd0rbgbuw6eb"]
+
+[ext_resource type="PackedScene" uid="uid://b7ennce0o3ope" path="res://3dModels/tree.glb" id="1_07vnd"]
+[ext_resource type="Shader" path="res://shaders/snowobject.gdshader" id="2_kke6q"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uxiqv"]
+radius = 3.0
+height = 20.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pksrp"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ejbui"]
+seamless = true
+noise = SubResource("FastNoiseLite_pksrp")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c8xka"]
+render_priority = 0
+shader = ExtResource("2_kke6q")
+shader_parameter/snow_amount = 2.0
+shader_parameter/snow_uv_scale = 0.101
+shader_parameter/albedo_snow = SubResource("NoiseTexture2D_ejbui")
+
+[node name="tree" instance=ExtResource("1_07vnd")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.72597, 0)
+shape = SubResource("CapsuleShape3D_uxiqv")
+
+[node name="Cube" parent="." index="1"]
+surface_material_override/0 = SubResource("ShaderMaterial_c8xka")

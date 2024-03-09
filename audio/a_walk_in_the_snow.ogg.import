@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/a_walk_in_the_snow.ogg-c406d861c9830e53499052
 [params]
 
 loop=false
-loop_offset=0
-bpm=0
+loop_offset=0.0
+bpm=0.0
 beat_count=0
 bar_beats=4
