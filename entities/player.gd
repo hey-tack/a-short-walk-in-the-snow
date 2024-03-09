@@ -204,3 +204,6 @@ func _die():
 	animation_tree.active = false
 	animation_player.speed_scale = 0.5
 	animation_player.play("Collapse")
+	
+func _quit():
+	get_tree().quit()
