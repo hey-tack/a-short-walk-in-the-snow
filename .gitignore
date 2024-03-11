@@ -17,3 +17,4 @@ mono_crash.*.json
 # Terrain model is too huge for github. And I don't have time to optimize it. 
 # I'm just going to exclude the files that are too big for github
 levels/world.tscn
+levels/trailer.tscn

@@ -7,18 +7,18 @@
 radius = 3.0
 height = 20.0
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_pksrp"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qwlky"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ejbui"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_e8ulm"]
 seamless = true
-noise = SubResource("FastNoiseLite_pksrp")
+noise = SubResource("FastNoiseLite_qwlky")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c8xka"]
 render_priority = 0
 shader = ExtResource("2_kke6q")
-shader_parameter/snow_amount = 2.0
-shader_parameter/snow_uv_scale = 0.101
-shader_parameter/albedo_snow = SubResource("NoiseTexture2D_ejbui")
+shader_parameter/snow_amount = 1.0
+shader_parameter/snow_uv_scale = 0.05
+shader_parameter/albedo_snow = SubResource("NoiseTexture2D_e8ulm")
 
 [node name="tree" instance=ExtResource("1_07vnd")]
 
